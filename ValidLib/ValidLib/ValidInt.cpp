@@ -30,7 +30,14 @@ bool valid::isInt(const std::string InputString, std::string& ErrMessage) {
 		double intPart, fractPart;
 		fractPart = modf(TestDouble, &intPart);
 		if (fractPart == 0.0) {
-			return true;
+			//check for overflow
+			if (intPart > static_cast<double>(std::numeric_limits<int>::max()) || intPart < static_cast<double>(std::numeric_limits<int>::min())) {
+				ErrMessage = "Input will cause integer overflow";
+				return false;
+			}
+			else {
+				return true;
+			}
 		}
 		else {
 			ErrMessage = "Input not integer";
